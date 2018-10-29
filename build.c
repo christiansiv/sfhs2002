@@ -1,5 +1,9 @@
 #include "bake.h"
 
+bool check_build_status(char *target, char * dependency);
+void action_building(char *action);
+int file_mod(char *filename);
+bool is_url(char *line);
 //code for breaking up dependencies (tested)
 	/*	char *med;  
 		med=strtok(deps, " "); //set whatever string u want
@@ -22,8 +26,8 @@ void build(LISTITEM *list) {
 	//loop for traversing through list of structures that containt target and assoc. deps & actions
 	LISTITEM *p=list;
 	while(p!=NULL) {
-	char * target=p>target;
-	char * dependency=p->dependency;
+	char * target=p->target;
+	char * dependency=p->dependencies;
 	char * action=p->action;
 
 	
@@ -51,7 +55,7 @@ bool check_build_status(char *target, char * dependency) {
 		med=strtok(dependency, " "); //set whatever string u want /what is deps? meant 
 		//loop that puts each individual dependency into pointer vector
 		while(med!=NULL) {
-			dep_words=realloc(dep_words, (dep+1) *sizeof(dep_words[0]);
+			dep_words=realloc(dep_words, (dep+1) *sizeof(dep_words[0]));
 			dep_words[dep]=strdup(med);
 			++dep;
 
@@ -59,23 +63,25 @@ bool check_build_status(char *target, char * dependency) {
 			}
 
 
-int targ_mod=filemod(*target);
+int targ_mod=file_mod(target);
 
 //checks the modification of targets dependencies against its own
 //checks if the dependency exists   <----
 //classifies it
 for(int i=0; i<dep; i++) {
 	int comp;
-	if(find_item(dep_word[i])) { //check if the dependency is a target and if is then check build
-	build(dep_word[i]);
-	comp=file_mod(dep_word[i]);	
-	} else if(is_url(dep_word[i])) {
+	LISTITEM* item = find_item(list,dep_words[i]);
+	if(item == NULL) { //check if the dependency is a target and if is then check build
+	build(item);
+	comp=file_mod(dep_words[i]);
+
+	} else if(is_url(dep_words[i])) {
 	//curl thingo for mod date then compare to targ
-	should_rebuild_url(dep_word[i]); //returns a string with the date
+	should_rebuild_url(dep_words[i]); //returns a string with the date
 	//******TO DO: convert the string with the date e.g Fri ... GMT to int to compare
-	
+	comp = 0;
 	} else {
-	comp=file_mod(dep_word[i])
+	comp=file_mod(dep_words[i]);
 	}
 	if(targ_mod<comp) { //check if int value of target is less (=less recently modified)
 		return false;
@@ -94,19 +100,19 @@ return true;
 
 void action_building(char *action) {
 //code for breaking up action lines based upon the "|"
-int length=strlen(action);
+//int length=strlen(action);
 char ** actions=NULL;
 int act=0;
 
 char *med;
-med=strok(action, "|");
+med=strtok(action, "|");
 
 while(med!=NULL) {
 	actions=realloc(actions, (act+1) *sizeof(actions[0]));
 	actions[act]=strdup(med);
 	++act;
 
-	med=strok(NULL, "|")
+	med=strtok(NULL, "|");
 }
 
 for(int i=0; i<act; i++) {
@@ -116,7 +122,7 @@ for(int i=0; i<act; i++) {
 
 }
 
-void(char [] action);
+//void(char [] action);
 
 
 
@@ -144,8 +150,8 @@ int file_mod(char *filename) { //just need to pass in unspecified target/depende
 int url_modification(char *url); // function to get the modification date of the url
 //function for determinining if a dependency is a url
 
-void is_url(char *line) { //untested
-	int length=strlen(line);
+bool is_url(char *line) { //untested
+	//int length=strlen(line);
 
 	char hs[]="https://";
 	int length1=strlen(hs);
@@ -185,7 +191,7 @@ void is_url(char *line) { //untested
 	return first || second || third;
 }
 
-int main(int arg c, char *[]argv) {
+int main(int argc, char* argv[]) {
 	//pass in file as argv 
 	//store in struct using store struct func - does it need to return the list maybe?
 	//then pass that struct into build 
@@ -213,7 +219,6 @@ int main(int arg c, char *[]argv) {
     }
     return 0;
 
-	
 }
 
 

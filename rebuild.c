@@ -8,6 +8,7 @@
 void rebuild(char * action) { //pass in an individual action line 
 	//fork and execute a line of text in the shell 
 //pid_t child, parent;
+
 int pid; 
 int exitstatus=0;
 int status;
@@ -28,9 +29,9 @@ switch(pid=fork()) {
 		exit(EXIT_FAILURE);
 		break;
 	case 0: //child
-		printf("%s %s\n", action, cwd);
+
 	execl(shell,action, (char *) NULL);
-	//sleep?
+
 	exit(exitstatus);
 	break;
 default: //parent
@@ -46,9 +47,9 @@ default: //parent
 
 }
 
-int main(int argc, char *argv[]) {
-	char *anything="mycc -o hellow_orld.c";
-	rebuild(anything);
-	return 0;
-}
+//int main(int argc, char *argv[]) {
+//	char *anything="mycc -o hellow_orld.c";
+//	rebuild(anything);
+//	return 0;
+//}
 

@@ -22,6 +22,7 @@ LISTITEM *list=NULL;
 
 //target structure
 extern void store_struct(FILE *); //param is not named
+extern LISTITEM* store_target(FILE *);
 bool is_target(char *);
 void trimline(char *);
 char* nextline(FILE *);
@@ -39,6 +40,7 @@ extern void rebuild(char *);
 
 
 //build
+extern LISTITEM* find_item(LISTITEM *list, char * targwanted);
 
 //variable expansion file
 extern char * handle_expansions(char *);

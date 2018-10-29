@@ -11,59 +11,6 @@
 #define CH_CONTINUATION         '\\'
 
 
-//things left to do:
-//-get rid of indent in action lines and provide a checker to make sure theyre action lines and not just nothing
-//-test variable expansion
-
-/*bool is_variable(char * line);
-
-//should work for the first $ you come across but need to adjust so it can be used multiple times per line
-char * assign(char * line) {
-	int length=strlen(line);
-	int pos=0;
-	//what if theres multiple var assignments in one line
-	for( int i=0; i<length; i++) {
-		if(line[i] == '$'){
-			pos=i;
-		}
-	}
-		char str[BUFSIZ];
-		int j=0;
-		for(pos=pos+1; pos<length; pos++) {
-			if(line[pos]==')') {
-				break;
-			}
-			str[j]=line[pos];
-			j++;
-		}
-		char * string=strdup(str);
-
-		return string;
-
-}
-//returns the amount of variable assignments for a given line
-int dollar(char *line) {
-	int length=strlen(line);
-	int count=0;
-
-	for(int i=0; i<length; i++) {
-		if(line[i]=='$') {
-		count++;
-		}
-	}
-	return count;
-}
-
-//function that accepts an integer and uses that to perform x assigns on a line and returns those char * in a pointer vector which can then be looped to pass into the find_item thingo?
-char ** need_var(char *line, int x) {
-	for(int i=0; i<
-*/		
-		
-
-
-
-
-
 void add_item(char * targ, char * deps,char *act) { 
 	if(list == NULL) {
 		list=malloc(sizeof(LISTITEM));
@@ -139,16 +86,16 @@ void print_action(LISTITEM *list)
 
 
 
-bool find_item(LISTITEM *list, char * targwanted) {
+LISTITEM *find_item(LISTITEM *list, char * targwanted) {
 	LISTITEM *p=list;
 
 	while(p!=NULL) {
 		if(strcmp(p->target, targwanted) ==0) {
-			return true;
+			return p;
 		}
 		p=p->next;
 	}
-	return false;
+	return NULL;
 }
 
 bool is_target(char *line) //need to test this out
@@ -232,7 +179,7 @@ bool is_action(char * line) {
 	return false;
 }
 
-LISTITEM * store_target(FILE *fp) {
+LISTITEM* store_target(FILE *fp) {
 	 while(!feof(fp)) {
             char *line = nextline(fp);
 	    //line here for handling variable assignments from other file 
@@ -294,30 +241,31 @@ LISTITEM * store_target(FILE *fp) {
 	 print_target(list);
 	 print_dependency(list);   //just for testing 
 	 print_action(list);
+	 return list;
  }
 
-int main(int argc, char *argv[])
-{
-    if(argc > 1) {
-        FILE *fp        = fopen(argv[1], "r");
-
-        if(fp == NULL) {
-            perror(argv[1]);
-            return 1;
-        }
-       /*while(!feof(fp)) {
-            char *line = nextline(fp);  // HANDLES CONTINUATION LINES
-
-            if(line) {
-                printf("%8s()\t%s\n", __func__, line);
-                free(line);
-            }
-       }*/
-	store_target(fp);
-        
-        fclose(fp);                     // WE OPENED IT, SO WE CLOSE IT
-    }
-    return 0;
-}
+//int main(int argc, char *argv[])
+//{
+//    if(argc > 1) {
+//        FILE *fp        = fopen(argv[1], "r");
+//
+//        if(fp == NULL) {
+//            perror(argv[1]);
+//            return 1;
+//        }
+//       /*while(!feof(fp)) {
+//            char *line = nextline(fp);  // HANDLES CONTINUATION LINES
+//
+//            if(line) {
+//                printf("%8s()\t%s\n", __func__, line);
+//                free(line);
+//            }
+//       }*/
+//	store_target(fp);
+//
+//        fclose(fp);                     // WE OPENED IT, SO WE CLOSE IT
+//    }
+//    return 0;
+//}
 
 

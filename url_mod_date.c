@@ -133,14 +133,14 @@ char * should_rebuild_url(char* url) {
     }
     }
 
-int main(int argc, char *argv[]) {
-	char url[]="http://teaching.csse.uwa.edu.au/units/CITS2002/project/dependency-5m";
-	char * urll=malloc(strlen(url)+1);
-	urll=strdup(url);
-
-	char * check=should_rebuild_url(urll);
-	printf("%s\n", check);
-	return 0;
-}
+//int main(int argc, char *argv[]) {
+//	char url[]="http://teaching.csse.uwa.edu.au/units/CITS2002/project/dependency-5m";
+//	char * urll=malloc(strlen(url)+1);
+//	urll=strdup(url);
+//
+//	char * check=should_rebuild_url(urll);
+//	printf("%s\n", check);
+//	return 0;
+//}
 
 
