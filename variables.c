@@ -1,3 +1,8 @@
+/*CITS2002 Project 2018
+ * Names: Christian Sivwright, Gemma Irving
+ * Student Numbers: 21484775, 21282314
+ */
+
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -17,6 +22,8 @@ struct Node {
     char value [50];
     struct Node* prev;
 };
+
+
 
 struct Node *curr = NULL;
 
