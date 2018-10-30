@@ -1,28 +1,20 @@
+/*CITS2002 Project 2018
+ * Names: Christian Sivwright, Gemma Irving
+ * Student Numbers: 21484775, 21282314
+ */
+
 #include "bake.h"
 
-bool check_build_status(char *target, char * dependency);
+bool check_build_status(LISTITEM *list, char *target, char * dependency);
 void action_building(char *action);
 int file_mod(char *filename);
 bool is_url(char *line);
-//code for breaking up dependencies (tested)
-	/*	char *med;  
-		med=strtok(deps, " "); //set whatever string u want
-		//loop that puts each individual dependency into pointer vector
-		while(med!=NULL) {
-			dep_words=realloc(dep_words, (dep+1) *sizeof(dep_words[0]);
-			dep_wrods[dep]=strdup(med);
-			++dep;
-
-		//	printf("%s\n", med); //prints out the the current word its pointing too
-		//	do something with curr word here or just put into a pointer vector
-			med=strtok(NULL, " "); //sets the pointer to the next word
-			} */
-
 
 
 //code for checking the modifcation date of target and dependencies
 //
 void build(LISTITEM *list) {
+	printf("%s\n", "herhe");
 	//loop for traversing through list of structures that containt target and assoc. deps & actions
 	LISTITEM *p=list;
 	while(p!=NULL) {
@@ -31,7 +23,7 @@ void build(LISTITEM *list) {
 	char * action=p->action;
 
 	
-	if(check_build_status(target, dependency)) {
+	if(check_build_status(p,target, dependency)) {
 		continue;
 	} else {
 	action_building(action);
@@ -44,9 +36,10 @@ void build(LISTITEM *list) {
 	}
 }
 
-bool check_build_status(char *target, char * dependency) {
+bool check_build_status(LISTITEM *list,char *target, char * dependency) {
 //pointer to target and pointer to dependency line passed in as parameters (tested)
-	
+	printf("%s\n", "herhe2");
+
 	//break up into pointer vector
 	char ** dep_words=NULL;
 	int dep=0;
@@ -62,22 +55,34 @@ bool check_build_status(char *target, char * dependency) {
 			med=strtok(NULL, " "); //sets the pointer to the next word
 			}
 
+printf("%s\n", "herhe22");
 
 int targ_mod=file_mod(target);
+if(targ_mod==0) { //if target is not an existing file on disk, rebuild target using actions
+	return false;
+}
+printf("%s\n", "herher");
 
 //checks the modification of targets dependencies against its own
 //checks if the dependency exists   <----
 //classifies it
 for(int i=0; i<dep; i++) {
-	int comp;
+	printf("%s\n", "herhe3");
+	if(file_mod(dep_words[i]==0)) { //if dependency doesnt exist rebuild target using actions
+	return false;
+	}
 	LISTITEM* item = find_item(list,dep_words[i]);
-	if(item == NULL) { //check if the dependency is a target and if is then check build
-	build(item);
+	if(item != NULL) { //dep is a target
+       	//check if the dependency is a target and if is then check build
+	build(dep_words[i]);
 	comp=file_mod(dep_words[i]);
-
+	
 	} else if(is_url(dep_words[i])) {
 	//curl thingo for mod date then compare to targ
-	should_rebuild_url(dep_words[i]); //returns a string with the date
+	const char* time_details=should_rebuild_url(dep_words[i]);//returns a string with the date
+	struct time tm;
+	strptime(time_details, %a:%d:%b:%Y:%H:%M%S, &tm);
+	time_t=mktime(&tm);
 	//******TO DO: convert the string with the date e.g Fri ... GMT to int to compare
 	comp = 0;
 	} else {
@@ -97,6 +102,22 @@ return true;
 	//rebuild target passed in 
 	//pass action lines to shell 
 	//need find_item function from other file
+char * remove_tab(char * line) {
+	int length=strlen(line);
+	
+	char new[length];
+	int index=0;
+	for(int i=0; i<length; i++) {
+	if(line[i]=='\t') {
+	continue;
+	}
+	new[index]=line[i];
+	index++;
+	}
+	new[index] = '\0';
+	printf("%s\n", new);
+	return strdup(new);
+}
 
 void action_building(char *action) {
 //code for breaking up action lines based upon the "|"
@@ -115,8 +136,10 @@ while(med!=NULL) {
 	med=strtok(NULL, "|");
 }
 
+
 for(int i=0; i<act; i++) {
-	rebuild(actions[i]);
+	char * rebuild_me=remove_tab(actions[i]);
+	rebuild(rebuild_me);
 }
 
 
@@ -135,7 +158,7 @@ int file_mod(char *filename) { //just need to pass in unspecified target/depende
 
 	if(stat(filename, &stat_buffer) != 0) { //can we stat the files attributes
 		perror(progname);
-		exit(EXIT_FAILURE);
+		return 0;	
 	}
 	else if( S_ISREG( stat_buffer.st_mode) ) {
 		printf("file was modified on %i\n", (int)stat_buffer.st_mtime);

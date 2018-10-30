@@ -1,10 +1,12 @@
+
 #include <stdio.h>
 #include<stdlib.h>
 #include<sys/types.h>
 #include<sys/stat.h>
 #include<time.h>
 #include<unistd.h>
-
+#include <string.h>
+#include "bake.h"
 void rebuild(char * action) { //pass in an individual action line 
 	//fork and execute a line of text in the shell 
 //pid_t child, parent;
@@ -12,7 +14,7 @@ void rebuild(char * action) { //pass in an individual action line
 int pid; 
 int exitstatus=0;
 int status;
-char * shell=getenv("SHELL"); //if this doesnt work pass in /bin/bash/
+//char * shell=getenv("SHELL"); //if this doesnt work pass in /bin/bash/
 //char actualpath[1000];
 //char * path=realpath(file, actualpath);
 /*char * buf;
@@ -29,9 +31,23 @@ switch(pid=fork()) {
 		exit(EXIT_FAILURE);
 		break;
 	case 0: //child
+		printf("I am child");
+	char * tok;
+	tok = strtok(action, " ");
 
-	execl(shell,action, (char *) NULL);
+	char **action_list = NULL;
+	int num = 0;
+	tok = strtok(action, " ");
+	while(tok!=NULL) {
+		action_list = realloc(action_list, (num+1) * sizeof(action_list[0]));
+		action_list[num] = strdup(tok);
+		++num;
+		tok = strtok(NULL, " ");
+	}
 
+	printf("%s",action);
+	execvp(action_list[0],action_list);
+	printf("ISSUE WITH ACTION");
 	exit(exitstatus);
 	break;
 default: //parent

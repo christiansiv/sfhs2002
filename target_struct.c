@@ -122,14 +122,23 @@ bool is_target(char *line) //need to test this out
 	return target;
 }
 
-/*void remove_tab(char [] line) {
+/*char * remove_tab(char * line) {
 	int length=strlen(line);
 	int count=0;
+	
 	for(int i=0; i<length; i++) {
 		if(line[i]=='	') {
-			count++;
+			break;
 		}
-	}*/
+		count++;
+	}
+	if(count!=length) {
+	for(int i=count; i<length; i++) {
+		line[i]=line[i+1];
+		}
+	}
+	return line;
+}*/
 		
 
 
@@ -175,6 +184,7 @@ char *nextline(FILE *fp)
         }
         fullline[ --(fulllength) ] = '\0'; // REMOVE TRAILING '\'
     }
+   // remove_tab(fullline);
     return fullline;
 
 	
