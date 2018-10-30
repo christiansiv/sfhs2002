@@ -34,6 +34,18 @@ void push_to_linkedlist(char* variable, char* value) {
 // Make function to search the list and return the value for the variable
 char* find_in_linkedlist(char* value) {
     //CHECK IF VALUE IS ANY SPECIAL CASE. I.E PID PPID RAND
+ if (value == "PID") {
+    return getpid();
+} else if value ==( "PPID") { 
+    return getppid();
+} else if value ==( "PWD") {
+   return getcwd();
+} else if value ==( "RAND") {
+    return rand();
+
+ else {
+
+
     struct Node *temp = curr;
     while( temp-> prev != NULL) {
         if( strcmp(value, temp->value)){
@@ -41,10 +53,12 @@ char* find_in_linkedlist(char* value) {
         }
         temp = temp->prev;
     }
-    //NOW CHECK ENV VARIABLES
+}
 
+    //NOW CHECK ENV VARIABLES
+    char * s = getenv(value);
     //OTHERWISE RETURN EMPTY STRING
-    return "";
+    return s;
 
 
 }
