@@ -45,7 +45,7 @@ bool check_build_status(LISTITEM *list,char *target, char * dependency) {
 	int dep=0;
 
 	char *med;  
-		med=strtok(dependency, " "); //set whatever string u want /what is deps? meant 
+		med=strtok(dependency, " ");  
 		//loop that puts each individual dependency into pointer vector
 		while(med!=NULL) {
 			dep_words=realloc(dep_words, (dep+1) *sizeof(dep_words[0]));
@@ -68,7 +68,7 @@ printf("%s\n", "herher");
 //classifies it
 for(int i=0; i<dep; i++) {
 	printf("%s\n", "herhe3");
-	if(file_mod(dep_words[i]==0)) { //if dependency doesnt exist rebuild target using actions
+	if(file_mod(dep_words[i]==0)) { //if dependency doesn't exist rebuild target using actions
 	return false;
 	}
 	LISTITEM* item = find_item(list,dep_words[i]);
