@@ -18,14 +18,6 @@ extern  char    *strdup(const char *str);
 #endif
 
 #define CH_CONTINUATION         '\\'
-struct Node {
-    char variable [50];
-    char value [50];
-    struct Node* prev;
-};
-
-
-
 struct Node *curr = NULL;
 
 // Make function to add elements to my linked list
@@ -71,6 +63,7 @@ char* find_in_linkedlist(char* value) {
      char *specialStr = malloc(sizeof(char) * (int) log10(special));
      return specialStr;
  }
+
  else {
 
 
@@ -105,12 +98,16 @@ void handle_assignment(char* line, int i) {
         current = line[j];
 
         if(isspace(current)) {
-            if (isspace(line[j+1]) ||  j+1==index || line[j+1] == '='){
+            if (isspace(line[j + 1]) || (j + 1 == index)) {
                 continue;
-            
+            }
         }
-        variable[index] = line[j];
-        index++;
+        else {
+
+
+            variable[index] = line[j];
+            index++;
+        }
     }
     int length = strlen(line);
     index = 0;
@@ -123,17 +120,19 @@ void handle_assignment(char* line, int i) {
         value[index] = line[j];
         index++;
     }
-    push_to_linkedlist(variable, value);
-    free(variable);
-    free(value);
 
-}
+    push_to_linkedlist(variable, value);
+    //free(variable);
+    //free(value);
+
+
 }
 
 //void handle_dependency(char* line,int i) 
     //Check if things have been built, if they haven't been built read down
 
 void handle_line(char* line) {
+    printf("%s",line);
     int length = strlen(line);
 
     if (line[0] == '\n') {
@@ -142,7 +141,8 @@ void handle_line(char* line) {
     } else if (line[0] == '#') {
 
         return;
-
+    } else if (line[0] == '\t') {
+        return;
     } else {
 
         for (int i = 0; i < length; i++) {

@@ -204,8 +204,8 @@ bool is_action(char * line) {
 LISTITEM* store_target(FILE *fp) {
 	 while(!feof(fp)) {
 		char *line = nextline(fp);
-		    //handle_line(line);
-	   //handle_expansions(line);
+		    handle_line(line);
+	   handle_expansions(line);
 	    //line here for handling variable assignments from other file 
 	    //where *line is passed in as param
 	    if(is_target(line)) {
@@ -281,12 +281,7 @@ LISTITEM* store_target(FILE *fp) {
 		}
 
 
- 		//free just line? or line2
-		free(line);
-	//	free(line2);
-	//    free(dependency);
-	//    free(target);
-	   // free(actionLine);
+
 
 		
 	    }
