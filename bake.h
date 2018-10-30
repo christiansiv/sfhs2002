@@ -1,3 +1,8 @@
+/*CITS2002 Project 2018
+ * Names: Christian Sivwright, Gemma Irving
+ * Student Numbers: 21484775, 21282314
+ */
+
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -18,7 +23,7 @@ typedef struct _l{
 	struct _l *next;
 } LISTITEM;
 
-LISTITEM *list=NULL;
+//LISTITEM *list=NULL;
 
 //target structure
 extern void store_struct(FILE *); //param is not named
