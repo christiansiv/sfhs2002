@@ -14,6 +14,7 @@ void rebuild(char * action) { //pass in an individual action line
 int pid; 
 int exitstatus=0;
 int status;
+char * temp = strdup(action);
 //char * shell=getenv("SHELL"); //if this doesnt work pass in /bin/bash/
 //char actualpath[1000];
 //char * path=realpath(file, actualpath);
@@ -31,31 +32,33 @@ switch(pid=fork()) {
 		exit(EXIT_FAILURE);
 		break;
 	case 0: //child
-		printf("I am child");
+		printf("I am child\n");
 	char * tok;
-	tok = strtok(action, " ");
 
 	char **action_list = NULL;
 	int num = 0;
-	tok = strtok(action, " ");
+
+	tok = strtok(temp, " \t");
+
 	while(tok!=NULL) {
+		printf("%s\n",tok);
 		action_list = realloc(action_list, (num+1) * sizeof(action_list[0]));
 		action_list[num] = strdup(tok);
 		++num;
-		tok = strtok(NULL, " ");
+		tok = strtok(NULL, " \t");
 	}
+	action_list[num] = '\0';
 
-	printf("%s",action);
+	printf("YO WASSUP I'M THE ACTION\n%s\n",action_list[1]);
 	execvp(action_list[0],action_list);
-	printf("ISSUE WITH ACTION");
+	printf("ISSUE WITH ACTION\n");
 	exit(exitstatus);
 	break;
 default: //parent
 	while ((pid=wait(&status)) >0) { //waiting
 		//printf
 	}
-	exit(exitstatus);
-	break;
+	return;
 
 }
 

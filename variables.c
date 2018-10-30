@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 #include "bake.h"
 
 #if defined(__linux__)
@@ -41,15 +42,35 @@ void push_to_linkedlist(char* variable, char* value) {
 // Make function to search the list and return the value for the variable
 char* find_in_linkedlist(char* value) {
     //CHECK IF VALUE IS ANY SPECIAL CASE. I.E PID PPID RAND
- if (value == "PID") {
-    return getpid();
-} else if value ==( "PPID") { 
-    return getppid();
-} else if value ==( "PWD") {
-   return getcwd();
-} else if value ==( "RAND") {
-    return rand();
+    int special = 0;
 
+ if (strcmp(value, "PID")) {
+     special = getpid();
+     char *specialStr = malloc(sizeof(char) * (int) log10(special));
+     return specialStr;
+} else if (strcmp(value,"PPID")) {
+
+     special = getppid();
+     char *specialStr = malloc(sizeof(char) * (int) log10(special));
+     return specialStr;
+
+} else if (strcmp(value, "PWD")) {
+     char* cwd;
+     if (getcwd(cwd, sizeof(cwd)) != NULL) {
+         printf("Current working dir: %s\n", cwd);
+         return cwd;
+     } else {
+         perror("getcwd() error");
+         return "";
+     }
+
+
+} else if ( strcmp(value,"RAND")) {
+
+     special = rand();
+     char *specialStr = malloc(sizeof(char) * (int) log10(special));
+     return specialStr;
+ }
  else {
 
 

@@ -3,9 +3,10 @@
  * Student Numbers: 21484775, 21282314
  */
 
+#include <ctype.h>
 #include "bake.h"
 
-bool check_build_status(LISTITEM *list, char *target, char * dependency);
+bool check_build_status(LISTITEM *item, LISTITEM *list);
 void action_building(char *action);
 int file_mod(char *filename);
 bool is_url(char *line);
@@ -13,30 +14,102 @@ bool is_url(char *line);
 
 //code for checking the modifcation date of target and dependencies
 //
-void build(LISTITEM *list) {
-	printf("%s\n", "herhe");
-	//loop for traversing through list of structures that containt target and assoc. deps & actions
-	LISTITEM *p=list;
-	while(p!=NULL) {
-	char * target=p->target;
-	char * dependency=p->dependencies;
-	char * action=p->action;
+void build(LISTITEM *item) {
+    check_build_status(item,item);
+}
+//	printf("%s\n", "herhe");
+//	//loop for traversing through list of structures that containt target and assoc. deps & actions
+//	LISTITEM *p=list;
+//	while(p!=NULL) {
+//	char * target=p->target;
+//	//char * dependency=p->dependencies;
+//	char * action=p->action;
+//
+//
+//	if(check_build_status(p,target)) {
+//		continue;
+//	} else {
+//	action_building(action);
+//	}
+//
+//
+//
+//	//end of stuff cont loop to next target
+//	p=p->next;
+//	}
 
-	
-	if(check_build_status(p,target, dependency)) {
-		continue;
-	} else {
-	action_building(action);
-	}
-			
-	
+bool check_build_status(LISTITEM *item, LISTITEM *list) {
+    //char*target=list->target;
+    char *dependency = item->dependencies;
+    char **dep_words = NULL;
+    int dep = 0;
 
-	//end of stuff cont loop to next target
-	p=p->next;
-	}
+    char *med;
+    char *temp = strdup(dependency);
+    med = strtok(temp, " ");
+    //loop that puts each individual dependency into pointer vector
+    while (med != NULL) {
+        dep_words = realloc(dep_words, (dep + 1) * sizeof(dep_words[0]));
+        dep_words[dep] = malloc(sizeof(med));
+        int length = strlen(med);
+        int index = 0;
+        for(int i =0 ; i < length; i++) {
+            if (isspace(med[i])) {
+                continue;
+            }
+            else {
+                dep_words[dep][index] = med[i];
+                index++;
+            }
+        }
+        dep_words[dep][index] = '\0';
+        ++dep;
+
+        med = strtok(NULL, " "); //sets the pointer to the next word
+    }
+
+    bool rebuild = false;
+
+    for (int i = 0; i < dep; i++) {
+        int time = file_mod(dep_words[i]);
+        if (time != 0) { // FILE EXISTS
+            if (time > file_mod(item->target)) { //dependency is newer so must rebuild;
+                rebuild = true;
+            } else { //target is newer;
+                continue;//so do what?
+            }
+        } else { // file doesn't exist
+            LISTITEM *found = find_item(list, dep_words[i]);
+            if (found == NULL) {
+
+                printf("Can't build doesn't exist\n");
+                exit(0);
+                //We can't build it because it doesn't exist anywhere
+            } else {
+                // we need to go build it
+                check_build_status(found, list);
+
+            }
+
+        }
+
+
+    }
+
+    action_building(item->action);
 }
 
-bool check_build_status(LISTITEM *list,char *target, char * dependency) {
+//    if(file_mod(target)==0) {
+//    for(int i=0; i<dep;i++) {
+//        if(file_mod(dep_words[i])) {
+//            if(find_item(list,dep_words[i])) {
+//                check_build_status(list, dep_words[i]);
+//            }
+//        }
+//    }
+//    }
+//}
+/*bool check_build_status(LISTITEM *list,char *target, char * dependency) {
 //pointer to target and pointer to dependency line passed in as parameters (tested)
 	printf("%s\n", "herhe2");
 
@@ -44,8 +117,8 @@ bool check_build_status(LISTITEM *list,char *target, char * dependency) {
 	char ** dep_words=NULL;
 	int dep=0;
 
-	char *med;  
-		med=strtok(dependency, " ");  
+	char *med;
+		med=strtok(dependency, " ");
 		//loop that puts each individual dependency into pointer vector
 		while(med!=NULL) {
 			dep_words=realloc(dep_words, (dep+1) *sizeof(dep_words[0]));
@@ -59,32 +132,42 @@ printf("%s\n", "herhe22");
 
 int targ_mod=file_mod(target);
 if(targ_mod==0) { //if target is not an existing file on disk, rebuild target using actions
-	return false;
-}
-printf("%s\n", "herher");
+    for(int i=0; i<dep; i++) {
+        LISTITEM* item = find_item(list,dep_words[i]);
+        if(item != NULL) { //dep is a target
+            //check if the dependency is a target and if is then check build
+            build(item);
+        }
+    }
+
+}*/
+
 
 //checks the modification of targets dependencies against its own
 //checks if the dependency exists   <----
 //classifies it
-for(int i=0; i<dep; i++) {
+/*for(int i=0; i<dep; i++) {
+	int comp = 0;
 	printf("%s\n", "herhe3");
-	if(file_mod(dep_words[i]==0)) { //if dependency doesn't exist rebuild target using actions
-	return false;
+
+	if(file_mod(dep_words[i])==0) { //if dependency doesn't exist rebuild target using actions
+		return false;
 	}
+
 	LISTITEM* item = find_item(list,dep_words[i]);
 	if(item != NULL) { //dep is a target
        	//check if the dependency is a target and if is then check build
-	build(dep_words[i]);
-	comp=file_mod(dep_words[i]);
-	
+     build(item);
+	 comp=file_mod(dep_words[i]);
+
 	} else if(is_url(dep_words[i])) {
 	//curl thingo for mod date then compare to targ
 	const char* time_details=should_rebuild_url(dep_words[i]);//returns a string with the date
-	struct time tm;
-	strptime(time_details, %a:%d:%b:%Y:%H:%M%S, &tm);
-	time_t t=mktime(&tm);
+	struct tm tm;
+	strptime(time_details, "%a:%d:%b:%Y:%H:%M%S", &tm);
+	time_t t =mktime(&tm);
 	comp=(int) t;
-	//******TO DO: convert the string with the date e.g Fri ... GMT to int to compare
+	******TO DO: convert the string with the date e.g Fri ... GMT to int to compare
 	comp = 0;
 	} else {
 	comp=file_mod(dep_words[i]);
@@ -95,7 +178,7 @@ for(int i=0; i<dep; i++) {
 	}
 }
 return true;
-}
+}*/
 
 
 
@@ -127,7 +210,8 @@ char ** actions=NULL;
 int act=0;
 
 char *med;
-med=strtok(action, "|");
+char *temp = strdup(action);
+med=strtok(temp, "|");
 
 while(med!=NULL) {
 	actions=realloc(actions, (act+1) *sizeof(actions[0]));
@@ -158,7 +242,7 @@ int file_mod(char *filename) { //just need to pass in unspecified target/depende
 	struct stat stat_buffer;
 
 	if(stat(filename, &stat_buffer) != 0) { //can we stat the files attributes
-		perror(progname);
+
 		return 0;	
 	}
 	else if( S_ISREG( stat_buffer.st_mode) ) {
@@ -235,6 +319,7 @@ int main(int argc, char* argv[]) {
             }
        }*/
 	LISTITEM * list=store_target(fp);
+
 	build(list);
 
 

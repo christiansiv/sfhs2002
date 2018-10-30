@@ -97,7 +97,8 @@ LISTITEM *find_item(LISTITEM *list, char * targwanted) {
 	LISTITEM *p=list;
 
 	while(p!=NULL) {
-		if(strcmp(p->target, targwanted) ==0) {
+
+		if(strcmp(p->target, targwanted)==0) {
 			return p;
 		}
 		p=p->next;
@@ -221,14 +222,22 @@ LISTITEM* store_target(FILE *fp) {
 			}
 			pos++;
 		}
+		int index = 0;
 		for(int j=0; j<pos; j++) {
-			newtarget[j]=line[j]; //target stored in char array for targets
+			if (isspace(line[j])) {
+				continue;
+			}
+			else {
+				newtarget[index] = line[j]; //target stored in char array for targets
+				index++;
+			}
 		}
-		newtarget[pos]='\0';
+		newtarget[index]='\0';
+
 		target=realloc(target, strlen(newtarget)+1);
 		target=strdup(newtarget);
 				pos++; //moves i to next character after the :
-		int index=0;
+		index=0;
 		for(int i=pos; i<length; i++) {
 			dependencies[index]=line[i];
 			index++;
