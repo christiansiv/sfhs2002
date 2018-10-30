@@ -57,8 +57,11 @@ char* find_in_linkedlist(char* value) {
 
     //NOW CHECK ENV VARIABLES
     char * s = getenv(value);
+    if ( s!=NULL) {
+        return s;
+    }
     //OTHERWISE RETURN EMPTY STRING
-    return s;
+    return "";
 
 
 }
