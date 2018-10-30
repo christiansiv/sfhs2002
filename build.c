@@ -82,7 +82,8 @@ for(int i=0; i<dep; i++) {
 	const char* time_details=should_rebuild_url(dep_words[i]);//returns a string with the date
 	struct time tm;
 	strptime(time_details, %a:%d:%b:%Y:%H:%M%S, &tm);
-	time_t=mktime(&tm);
+	time_t t=mktime(&tm);
+	comp=(int) t;
 	//******TO DO: convert the string with the date e.g Fri ... GMT to int to compare
 	comp = 0;
 	} else {

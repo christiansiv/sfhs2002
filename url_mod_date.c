@@ -1,3 +1,8 @@
+/*CITS2002 Project 2018
+ * Names: Christian Sivwright, Gemma Irving
+ * Student Numbers: 21484775, 21282314
+ */
+
 #include <stdio.h>
 #include<stdlib.h>
 #include<sys/types.h>

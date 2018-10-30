@@ -1,3 +1,8 @@
+/*CITS2002 Project 2018
+ * Names: Christian Sivwright, Gemma Irving
+ * Student Numbers: 21484775, 21282314
+ */
+
 #include "bake.h"
 
 //func to count amount of '$' in a line 
@@ -94,5 +99,20 @@ char * handle_expansions(char * line) {
 
 	return expanded[counter-1];
 }
+
+/*int main(int argc, char *argv[]) {
+	char line1[]="mycc = cc -std=c99 -Wall -pedantic -Werror";
+	char line2[]="$(mycc) -c globals.c";
+	printf("%s\n", line1);
+	char *lineline=strdup(line1);
+	char *p=strdup(line2);
+	
+	handle_line(lineline);
+	char *output=handle_expansions(p);
+	printf("%s\n", output);
+	
+
+	return 0;
+}*/
 
 
