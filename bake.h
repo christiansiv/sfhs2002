@@ -15,6 +15,15 @@
 #include<string.h>
 
 
+struct Node {
+	char variable [50];
+	char value [50];
+	struct Node* prev;
+};
+
+
+
+
 //user defined datatype
 typedef struct _l{
 	char * target;
