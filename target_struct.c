@@ -204,31 +204,38 @@ bool is_action(char * line) {
 LISTITEM* store_target(FILE *fp) {
 	 while(!feof(fp)) {
 		char *line = nextline(fp);
-		    handle_line(line);
-	   handle_expansions(line);
+		bool target=false;
+		if(line[0]=='	'){
+			target=true;
+		}
+
+		if(!target) { //don't do variable assignment on action lines coz they might have equals
+			handle_line(line);
+		}
+	   char *line1=handle_expansions(line);
 	    //line here for handling variable assignments from other file 
 	    //where *line is passed in as param
-	    if(is_target(line)) {
+	    if(is_target(line1)) {
 		char newtarget[BUFSIZ];
 		char dependencies[BUFSIZ];
 		int pos=0; //keeps track of line index position
-		int length=strlen(line);
+		int length=strlen(line1);
 		char *dependency=NULL;
 		char *target=NULL;
 				
 		for(int i=0; i<length; i++) {
-			if(line[i]==':') {
+			if(line1[i]==':') {
 				break;
 			}
 			pos++;
 		}
 		int index = 0;
 		for(int j=0; j<pos; j++) {
-			if (isspace(line[j])) {
+			if (isspace(line1[j])) {
 				continue;
 			}
 			else {
-				newtarget[index] = line[j]; //target stored in char array for targets
+				newtarget[index] = line1[j]; //target stored in char array for targets
 				index++;
 			}
 		}
@@ -239,7 +246,7 @@ LISTITEM* store_target(FILE *fp) {
 				pos++; //moves i to next character after the :
 		index=0;
 		for(int i=pos; i<length; i++) {
-			dependencies[index]=line[i];
+			dependencies[index]=line1[i];
 			index++;
 		}
 		dependencies[index]='\0';
@@ -250,6 +257,7 @@ LISTITEM* store_target(FILE *fp) {
 
 		if(!feof(fp)) {
 		char *line2=nextline(fp);
+
 				int fullength=0;
 		
 		while(is_action(line2)) {
@@ -265,23 +273,26 @@ LISTITEM* store_target(FILE *fp) {
 				break;
 			} else {
 			line2=nextline(fp);
+
 			}
 		}
 		actionLine[--fullength]='\0';
 		char *actionLines=strdup(actionLine);
+		char *expandedLine=handle_expansions(actionLines);
 		//line here for handling variable assignment of action line from other
 		//file where *act is passed in as param
 	
 		
 		//add into list
-		add_item(target, dependency, actionLines);
+		add_item(target, dependency, expandedLine);
 		free(target);
 		free(dependency);
 		free(actionLines);
 		free(line2);
 		} else {
 		char * actionLines=strdup(actionLine);
-		add_item(target, dependency, actionLines);
+		char * expandedLine=handle_expansions(actionLines);
+		add_item(target, dependency, expandedLine);
 		}
 
 		free(line);
@@ -293,6 +304,7 @@ LISTITEM* store_target(FILE *fp) {
 	   
 	    
 	 }
+
 	 print_target(list);
 	 print_dependency(list);   //just for testing 
 	 print_action(list);

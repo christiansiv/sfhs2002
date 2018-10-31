@@ -49,7 +49,7 @@ switch(pid=fork()) {
 	}
 	action_list[num] = "\0";
 
-	printf("YO WASSUP I'M THE ACTION\n%s\n",action_list[1]);
+
 	execvp(action_list[0],action_list);
 	printf("ISSUE WITH ACTION\n");
 	exit(exitstatus);

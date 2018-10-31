@@ -44,25 +44,29 @@ char * expansion(char * line) {
 	//find word inside $(word)
 	char var[BUFSIZ];
 	int index=0; 
-	for(int i=start+2; i<end; i++) {
+	for(int i=start+1; i<end-1; i++) {
 		var[index]=line[i];
 		index++;
 	}
 	//replace w/value
 	char * variable=strdup(var);
 	char * value=find_in_linkedlist(variable);
-
+	char a[]=" ";
+	value=realloc(value, strlen(line)+1);
+	value=strcat(value, a);
 	//get first part of string
 	char str1[BUFSIZ];
 	int index2=0;
-	for(int i=0; i<start; i++) {
+	for(int i=0; i<start-1; i++) {
 		str1[index2]=line[i];
 		index2++;
 	}
+
 	
 	//get string remaining after var
 	char str2[BUFSIZ];
 	int index3=0;
+
 	for(int i=end+1; i<length; i++) {
 		str2[index3]=line[i];
 		index3++;
@@ -83,21 +87,34 @@ char * expansion(char * line) {
 
 //overall function repeats expansion for however many $'s there are
 char * handle_expansions(char * line) {
-	int counter=count(line);
-	char **expanded= malloc(sizeof(char *));
-	int exp=0;
-	expanded=realloc(expanded, (exp+1)*sizeof(expanded[0]));
-	expanded[exp]=expansion(line);
-	exp++;
-
-
-	for(int i=0; i<counter-1; i++) {
-		expanded=realloc(expanded, (exp+1)*sizeof(expanded[0]));
-		expanded[exp]=expansion(expanded[i]);
-		exp++;
+	bool expand = false;
+	int i = 0;
+	while (line[i] != '\0') {
+		if (line[i] == '$') {
+			expand = true;
+			break;
+		}
+		i++;
 	}
+	if (expand) {
+		int counter = count(line);
+		char **expanded = malloc(sizeof(char *));
+		int exp = 0;
+		expanded = realloc(expanded, (exp + 1) * sizeof(expanded[0]));
+		expanded[exp] = expansion(line);
+		exp++;
 
-	return expanded[counter-1];
+
+		for (int i = 0; i < counter - 1; i++) {
+			expanded = realloc(expanded, (exp + 1) * sizeof(expanded[0]));
+			expanded[exp] = expansion(expanded[i]);
+			exp++;
+		}
+
+		return expanded[counter - 1];
+	} else {
+		return line;
+	}
 }
 
 /*int main(int argc, char *argv[]) {

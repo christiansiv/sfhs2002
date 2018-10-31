@@ -37,21 +37,21 @@ void push_to_linkedlist(char* variable, char* value) {
 }
 
 // Make function to search the list and return the value for the variable
-char* find_in_linkedlist(char* value) {
+char* find_in_linkedlist(char* variable) {
     //CHECK IF VALUE IS ANY SPECIAL CASE. I.E PID PPID RAND
     int special = 0;
 
- if (strcmp(value, "PID")) {
+ if (strcmp(variable, "PID")==0) {
      special = getpid();
      char *specialStr = malloc(sizeof(char) * (int) log10(special));
      return specialStr;
-} else if (strcmp(value,"PPID")) {
+} else if (strcmp(variable,"PPID")==0) {
 
      special = getppid();
      char *specialStr = malloc(sizeof(char) * (int) log10(special));
      return specialStr;
 
-} else if (strcmp(value, "PWD")) {
+} else if (strcmp(variable, "PWD")==0) {
      char* cwd = NULL;
      if (getcwd(cwd, sizeof(cwd)) != NULL) {
          printf("Current working dir: %s\n", cwd);
@@ -62,7 +62,7 @@ char* find_in_linkedlist(char* value) {
      }
 
 
-} else if ( strcmp(value,"RAND")) {
+} else if ( strcmp(variable,"RAND")==0) {
 
      special = rand();
      char *specialStr = malloc(sizeof(char) * (int) log10(special));
@@ -74,7 +74,7 @@ char* find_in_linkedlist(char* value) {
 
     struct Node *temp = curr;
     while( temp-> prev != NULL) {
-        if( strcmp(value, temp->value)){
+        if( strcmp(variable, temp->variable)==0){
             return temp->value;
         }
         temp = temp->prev;
@@ -82,7 +82,7 @@ char* find_in_linkedlist(char* value) {
 }
 
     //NOW CHECK ENV VARIABLES
-    char * s = getenv(value);
+    char * s = getenv(variable);
     if ( s!=NULL) {
         return s;
     }
