@@ -84,7 +84,7 @@ char * expansion(char * line) {
 //overall function repeats expansion for however many $'s there are
 char * handle_expansions(char * line) {
 	int counter=count(line);
-	char **expanded=NULL;
+	char **expanded= malloc(sizeof(char *));
 	int exp=0;
 	expanded=realloc(expanded, (exp+1)*sizeof(expanded[0]));
 	expanded[exp]=expansion(line);
