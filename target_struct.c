@@ -271,16 +271,21 @@ LISTITEM* store_target(FILE *fp) {
 		char *actionLines=strdup(actionLine);
 		//line here for handling variable assignment of action line from other
 		//file where *act is passed in as param
-
+	
 		
 		//add into list
 		add_item(target, dependency, actionLines);
+		free(target);
+		free(dependency);
+		free(actionLines);
+		free(line2);
 		} else {
 		char * actionLines=strdup(actionLine);
 		add_item(target, dependency, actionLines);
 		}
 
-
+		free(line);
+		
 
 
 		

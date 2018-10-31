@@ -47,7 +47,7 @@ char* find_in_linkedlist(char* value) {
      return specialStr;
 
 } else if (strcmp(value, "PWD")) {
-     char* cwd;
+     char* cwd=NULL;
      if (getcwd(cwd, sizeof(cwd)) != NULL) {
          printf("Current working dir: %s\n", cwd);
          return cwd;

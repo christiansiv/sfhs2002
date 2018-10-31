@@ -22,8 +22,6 @@ struct Node {
 };
 
 
-
-
 //user defined datatype
 typedef struct _l{
 	char * target;
@@ -32,7 +30,6 @@ typedef struct _l{
 	struct _l *next;
 } LISTITEM;
 
-//LISTITEM *list=NULL;
 
 //target structure
 extern void store_struct(FILE *); //param is not named
@@ -55,6 +52,7 @@ extern void rebuild(char *);
 
 //build
 extern LISTITEM* find_item(LISTITEM *list, char * targwanted);
+extern void build(LISTITEM *list);
 
 //variable expansion file
 extern char * handle_expansions(char *);
