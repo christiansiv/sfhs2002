@@ -5,9 +5,9 @@
 
 #include <ctype.h>
 #include "bake.h"
-
-bool check_build_status(LISTITEM *item, LISTITEM *list);
 void action_building(char *action);
+bool check_build_status(LISTITEM *item, LISTITEM *list);
+
 int file_mod(char *filename);
 bool is_url(char *line);
 
@@ -108,7 +108,7 @@ char * remove_tab(char * line) {
 	index++;
 	}
 	new[index] = '\0';
-	printf("%s\n", new);
+	//printf("%s\n", new);
 	return strdup(new);
 }
 
@@ -155,8 +155,8 @@ int file_mod(char *filename) { //just need to pass in unspecified target/depende
 		return 0;	
 	}
 	else if( S_ISREG( stat_buffer.st_mode) ) {
-		printf("file was modified on %i\n", (int)stat_buffer.st_mtime);
-		printf("which was %s", ctime(&stat_buffer.st_mtime));
+		//printf("file was modified on %i\n", (int)stat_buffer.st_mtime);
+		//printf("which was %s", ctime(&stat_buffer.st_mtime));
 	//	int time=(int)stat_buffer.st_mtime;
 		return  (int)stat_buffer.st_mtime;
 

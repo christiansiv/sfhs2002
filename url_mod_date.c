@@ -98,7 +98,7 @@ char * should_rebuild_url(char* url) {
     pipe(fd);
     argv[0] = "curl";
     argv[1] = "-I";
-    argv[2] = "https://www.tutorialspoint.com/c_standard_library/c_function_malloc.htm";
+    argv[2] = url;
     argv[3] = NULL;
     child_pid = fork();
     if (child_pid == 0) {
@@ -128,10 +128,10 @@ char * should_rebuild_url(char* url) {
             strcat(totalStr,readbuffer);
         }
         wait(NULL);
-       	printf("%s\n",totalStr);
+       	//printf("%s\n",totalStr);
        //TODO: TOTAL STR CONTAINS THE ANSWER
 	char * string=get_mod1(totalStr);
-	printf("%s\n",string);
+	//printf("%s\n",string);
 
 	return string;
 

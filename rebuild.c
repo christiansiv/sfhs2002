@@ -1,12 +1,6 @@
 
-#include <stdio.h>
-#include<stdlib.h>
-#include<sys/types.h>
-#include<sys/stat.h>
-#include<time.h>
-#include<unistd.h>
-#include <string.h>
 #include "bake.h"
+
 void rebuild(char * action) { //pass in an individual action line 
 	//fork and execute a line of text in the shell 
 //pid_t child, parent;
@@ -25,23 +19,27 @@ buf=(char *) malloc(allocSize);
 cwd=getcwd(buf, allocSize);
 //printf("%s\n", cwd);*/
 
-
-switch(pid=fork()) {
-	case -1:
-		printf("fork failed");
-		exit(EXIT_FAILURE);
-		break;
-	case 0: //child
-		printf("I am child\n");
 	char * tok;
 
 	char **action_list = NULL;
 	int num = 0;
 
+switch(pid=fork()) {
+	case -1:
+		printf("fork failed\n");
+		exit(EXIT_FAILURE);
+		break;
+	case 0: //child
+
+	if (temp[0] == '@' || s_flag) {
+
+	} else {
+		printf("%s\n",temp);
+	}
 	tok = strtok(temp, " \t");
 
 	while(tok!=NULL) {
-		printf("%s\n",tok);
+		//printf("%s\n",tok);
 		action_list = realloc(action_list, (num+1) * sizeof(action_list[0]));
 		action_list[num] = strdup(tok);
 		++num;

@@ -166,11 +166,15 @@ char *nextline(FILE *fp)
     int         thislength      = 0;
 
     while(fgets(thisline, sizeof thisline, fp) != NULL) {
+
         trimline(thisline);                     // REMOVE TRAILING \n or \r
+        if(thisline[0] == '#') {
+        	continue;
+        }
         thislength      = strlen(thisline);
         fulllength      += thislength;
 
-        printf("%8s()\t%s\n", __func__, thisline);
+        //printf("%8s()\t%s\n", __func__, thisline);
 
         if(fullline == NULL) {
             fullline    = strdup(thisline);
@@ -204,6 +208,7 @@ bool is_action(char * line) {
 LISTITEM* store_target(FILE *fp) {
 	 while(!feof(fp)) {
 		char *line = nextline(fp);
+
 		bool target=false;
 		if(line[0]=='	'){
 			target=true;
@@ -305,9 +310,9 @@ LISTITEM* store_target(FILE *fp) {
 	    
 	 }
 
-	 print_target(list);
-	 print_dependency(list);   //just for testing 
-	 print_action(list);
+	 //print_target(list);
+	 //print_dependency(list);   //just for testing
+	 //print_action(list);
 	 return list;
  }
 

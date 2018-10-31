@@ -54,7 +54,7 @@ char* find_in_linkedlist(char* variable) {
 } else if (strcmp(variable, "PWD")==0) {
      char* cwd = NULL;
      if (getcwd(cwd, sizeof(cwd)) != NULL) {
-         printf("Current working dir: %s\n", cwd);
+         //printf("Current working dir: %s\n", cwd);
          return cwd;
      } else {
          perror("getcwd() error");
@@ -140,7 +140,7 @@ void handle_assignment(char* line, int i) {
     //Check if things have been built, if they haven't been built read down
 
 void handle_line(char* line) {
-    printf("%s",line);
+    //printf("%s",line);
     int length = strlen(line);
 
     if (line[0] == '\n') {

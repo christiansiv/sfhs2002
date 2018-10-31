@@ -14,6 +14,16 @@
 #include<unistd.h>
 #include<string.h>
 
+// flags
+
+
+char c_flag[300];
+char f_flag[200] ;
+int i_flag;
+int n_flag;
+int p_flag;
+int s_flag;
+
 
 struct Node {
 	char* variable;
