@@ -114,6 +114,8 @@ void handle_assignment(char* line, int i) {
             index++;
         }
     }
+    variable = realloc(variable, index * sizeof(*variable));
+    variable[index] = '\0';
     int length = strlen(line);
     index = 0;
     for(int j = i+1;j<length; j++) {
@@ -125,7 +127,8 @@ void handle_assignment(char* line, int i) {
         value[index] = line[j];
         index++;
     }
-
+    value = realloc(value, index * sizeof(*value));
+    value[index] = '\0';
     push_to_linkedlist(variable, value);
     free(variable);
     free(value);
