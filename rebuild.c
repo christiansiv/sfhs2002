@@ -64,9 +64,3 @@ default: //parent
 
 }
 
-//int main(int argc, char *argv[]) {
-//	char *anything="mycc -o hellow_orld.c";
-//	rebuild(anything);
-//	return 0;
-//}
-

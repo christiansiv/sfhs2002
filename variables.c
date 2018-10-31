@@ -140,7 +140,7 @@ void handle_assignment(char* line, int i) {
     //Check if things have been built, if they haven't been built read down
 
 void handle_line(char* line) {
-    //printf("%s",line);
+
     int length = strlen(line);
 
     if (line[0] == '\n') {

@@ -52,10 +52,10 @@ char * expansion(char * line) {
 	char * variable=strdup(var);
 	char * value=find_in_linkedlist(variable);
 	char a[]=" ";
-	value=realloc(value, strlen(line)+1);
+	value=realloc(value,sizeof(value[0])*strlen(value)+1);
 	value=strcat(value, a);
 	//get first part of string
-	char str1[BUFSIZ];
+	char str1[BUFSIZ]="";
 	int index2=0;
 	for(int i=0; i<start-1; i++) {
 		str1[index2]=line[i];
@@ -64,7 +64,7 @@ char * expansion(char * line) {
 
 	
 	//get string remaining after var
-	char str2[BUFSIZ];
+	char str2[BUFSIZ]="";
 	int index3=0;
 
 	for(int i=end+1; i<length; i++) {
@@ -72,12 +72,19 @@ char * expansion(char * line) {
 		index3++;
 	}
 	
-	//do i need to strcopy var before putting in strcat??
-	//put back together and then return char * to final string
-	char *str_med=strcat(str1, value);
-	char *str_final=strcat(str_med, str2);
 
+	//put back together and then return char * to final string
+
+
+	char *str_med=strcat(str1, value);
+
+	char * str_final=strcat(str_med, str2);
 	char * expanded=strdup(str_final);
+
+	int final_length = strlen(expanded) +1;
+	expanded = realloc(expanded, sizeof(expanded[0])*final_length);
+	expanded[final_length] = '\0';
+
 	return expanded;
 }
 
@@ -117,19 +124,6 @@ char * handle_expansions(char * line) {
 	}
 }
 
-/*int main(int argc, char *argv[]) {
-	char line1[]="mycc = cc -std=c99 -Wall -pedantic -Werror";
-	char line2[]="$(mycc) -c globals.c";
-	printf("%s\n", line1);
-	char *lineline=strdup(line1);
-	char *p=strdup(line2);
-	
-	handle_line(lineline);
-	char *output=handle_expansions(p);
-	printf("%s\n", output);
-	
 
-	return 0;
-}*/
 
 

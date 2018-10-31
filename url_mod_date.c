@@ -14,7 +14,7 @@
 
 char * get_mod1(char * line) {
 int length=strlen(line);
-//printf("%d\n", length);
+
 char str[]="Last-Modified:";
 int length0=strlen(str);
 bool match=true;
@@ -23,10 +23,10 @@ int pos1=0;
 int pos2=0;
 
 while(length != traverse) {
-//	printf("%s\n", "here"); gets here
+
 	
 	if(line[traverse]=='L') {
-	//	printf("%s\n", "here");
+
 
 		pos1=traverse;
 		int index=0;
@@ -38,7 +38,7 @@ while(length != traverse) {
 
 			index++;
 		}
-	//	printf("%s\n", "here");
+
 		
 	if(match==true) {
 		break;
@@ -46,7 +46,7 @@ while(length != traverse) {
 	}
 	traverse++;
 	}
-//printf("%d\n", pos1);
+
 char str2[]="GMT";
 int length2=strlen(str2);
 int traverse2=pos1;
@@ -65,7 +65,7 @@ while(length!=traverse2) {
 		
 	if(match2==true) {
 		break;
-	//	printf("%s\n", "here3");
+
 
 	}
 	
@@ -74,7 +74,7 @@ while(length!=traverse2) {
 
 
 }
-//printf("%d\n", pos2);
+
 char date[BUFSIZ];
 int index2=0;
 
@@ -128,24 +128,15 @@ char * should_rebuild_url(char* url) {
             strcat(totalStr,readbuffer);
         }
         wait(NULL);
-       	//printf("%s\n",totalStr);
-       //TODO: TOTAL STR CONTAINS THE ANSWER
+
+
 	char * string=get_mod1(totalStr);
-	//printf("%s\n",string);
+
 
 	return string;
 
     }
     }
 
-//int main(int argc, char *argv[]) {
-//	char url[]="http://teaching.csse.uwa.edu.au/units/CITS2002/project/dependency-5m";
-//	char * urll=malloc(strlen(url)+1);
-//	urll=strdup(url);
-//
-//	char * check=should_rebuild_url(urll);
-//	printf("%s\n", check);
-//	return 0;
-//}
 
 

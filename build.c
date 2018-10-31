@@ -164,8 +164,7 @@ int file_mod(char *filename) { //just need to pass in unspecified target/depende
 	return 0;
 }
 
-int url_modification(char *url); // function to get the modification date of the url
-//function for determinining if a dependency is a url
+
 
 bool is_url(char *line) { //untested
 	//int length=strlen(line);
