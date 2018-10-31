@@ -52,7 +52,16 @@ bool check_build_status(LISTITEM *item, LISTITEM *list) {
     bool rebuild = false;
 
     for (int i = 0; i < dep; i++) {
-        int time = file_mod(dep_words[i]);
+	int time = 0;
+	if(is_url(dep_words[i])) {
+	const char* time_details=should_rebuild_url(dep_words[i]);//returns a string with the date
+	struct tm tm;	
+	strptime(time_details, "%a:%d:%b:%Y:%H:%M%S", &tm);
+	time_t t =mktime(&tm);
+	time=(int) t;
+	} else {
+		
+	time=file_mod(dep_words[i]);
         if (time != 0) { // FILE EXISTS
             if (time > file_mod(item->target)) { //dependency is newer so must rebuild;
                 rebuild = true;
@@ -74,9 +83,9 @@ bool check_build_status(LISTITEM *item, LISTITEM *list) {
 
         }
 
-
+	}
     }
-
+	free(dep_words);
     action_building(item->action);
     return true;
 }
@@ -126,7 +135,7 @@ for(int i=0; i<act; i++) {
 	char * rebuild_me=remove_tab(actions[i]);
 	rebuild(rebuild_me);
 }
-
+free(actions);
 
 }
 
