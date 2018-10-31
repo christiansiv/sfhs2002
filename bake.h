@@ -16,8 +16,8 @@
 
 
 struct Node {
-	char variable [50];
-	char value [50];
+	char* variable;
+	char* value ;
 	struct Node* prev;
 };
 
@@ -51,7 +51,7 @@ void push_to_linkedlist(char*,char*);
 
 //rebuild
 extern void rebuild(char *);
-
+extern void build(LISTITEM *item);
 
 //build
 extern LISTITEM* find_item(LISTITEM *list, char * targwanted);

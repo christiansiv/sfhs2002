@@ -17,26 +17,7 @@ bool is_url(char *line);
 void build(LISTITEM *item) {
     check_build_status(item,item);
 }
-//	printf("%s\n", "herhe");
-//	//loop for traversing through list of structures that containt target and assoc. deps & actions
-//	LISTITEM *p=list;
-//	while(p!=NULL) {
-//	char * target=p->target;
-//	//char * dependency=p->dependencies;
-//	char * action=p->action;
-//
-//
-//	if(check_build_status(p,target)) {
-//		continue;
-//	} else {
-//	action_building(action);
-//	}
-//
-//
-//
-//	//end of stuff cont loop to next target
-//	p=p->next;
-//	}
+
 
 bool check_build_status(LISTITEM *item, LISTITEM *list) {
     //char*target=list->target;

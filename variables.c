@@ -25,8 +25,8 @@ void push_to_linkedlist(char* variable, char* value) {
     // Add to linked list
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
     new_node->prev = curr;
-    strcpy(new_node->variable,variable);
-    strcpy(new_node->value ,value);
+    new_node->variable = strdup(variable);
+    new_node->value =strdup(value);
     curr = new_node;
 
 }
